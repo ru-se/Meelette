@@ -1,0 +1,100 @@
+.container {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .dropdown {
+    margin-bottom: 20px;
+  }
+  
+  select {
+    padding: 10px;
+    font-size: 16px;
+    width: 200px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  button {
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+  }
+  
+  button:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+  }
+  
+  .roulette-wheel {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin: 20px auto;
+    border-radius: 50%;
+    border: 5px solid #333;
+    overflow: hidden;
+    transition: transform 5s ease-out;
+  }
+  
+  .wheel {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .segment {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    background-color: transparent;
+    transform-origin: 100% 100%;
+    clip-path: polygon(100% 100%, 0 100%, 0 0, 100% 0);
+  }
+  
+  .roulette-pointer {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 20px solid black;
+    transform: translateX(-50%);
+  }
+  
+  .roulette {
+    font-size: 20px;
+    margin-top: 20px;
+  }
+  
+  .result {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 20px;
+    color: green;
+  }
+  
+  .spinning {
+    animation: spin 5s ease-out;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
