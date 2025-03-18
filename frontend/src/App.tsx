@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom"
@@ -12,6 +12,16 @@ import ShopRoulette from "./ShopRoulette"
 import ShopResult from "./ShopResult"
 
 const App: React.FC = () =>{
+
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:8000/sql-data')
+      .then(response => response.json())
+      .then(data => setData(data))
+      .catch(error => console.error('Error fetching data:', error));
+  }, []);
+
   return (
     <Router>
       <Routes>
@@ -25,6 +35,10 @@ const App: React.FC = () =>{
       <Route path="/ShopResult" element={<ShopResult />} />
 
       </Routes>
+      <div>
+        <h1>Data from /sql-data</h1>
+        <pre>{JSON.stringify(data, null, 2)}</pre>
+      </div>
     </Router>
   )
 }

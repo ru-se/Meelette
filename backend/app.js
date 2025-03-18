@@ -12,8 +12,8 @@ app.use(cors()) // corsを有効にする
 
 // mysqlの接続に必要な情報を記載する（それぞれ自身のmysql情報を入力していく）
 const con = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
+  host: '127.0.0.1',
+  user: 'admin',
   password: 'Lana_0703',
   database: 'Meelette'
 })
