@@ -12,11 +12,11 @@ app.use(cors()) // corsを有効にする
 
 // mysqlの接続に必要な情報を記載する（それぞれ自身のmysql情報を入力していく）
 const con = mysql.createConnection({
-  host: '127.0.0.1',
-  user: 'admin',
-  password: 'Lana_0703',
-  database: 'Meelette'
-})
+  host: process.env.DB_HOST, // ⬅ 環境変数を使用
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE
+});
 
 // mysql接続
 con.connect((err) => {
