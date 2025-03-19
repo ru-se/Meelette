@@ -10,6 +10,7 @@ import GenreResult from "./GenreResult"
 import Shop from "./Shop"
 import ShopRoulette from "./ShopRoulette"
 import ShopResult from "./ShopResult"
+import AddShop from "./AddShop"
 
 const App: React.FC = () =>{
 
@@ -33,6 +34,7 @@ const App: React.FC = () =>{
       <Route path="/Shop" element={<Shop />} />
       <Route path="/ShopROulette" element={<ShopRoulette />} />
       <Route path="/ShopResult" element={<ShopResult />} />
+      <Route path="/AddShop" element={<AddShop />} />
 
       </Routes>
       <div>
