@@ -40,6 +40,13 @@ app.get('/sql-data', (req, res) => {
   })
 })
 
+// ランダムにジャンルを返すエンドポイント
+app.get('/random-genre', (req, res) => {
+  const genres = ['洋食', '和食', '中華', 'ラーメン', 'カフェ', '韓国料理'];
+  const randomGenre = genres[Math.floor(Math.random() * genres.length)];
+  return res.json({ genre: randomGenre });
+});
+
 // 指定された場所、カテゴリ、ジャンルに一致するお店をランダムに選んで返すメソッド
 app.get('/random-shop', (req, res) => {
   const { location, category, genre } = req.query;
