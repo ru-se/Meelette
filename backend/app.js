@@ -3,6 +3,7 @@ const express = require('express')
 const mysql = require('mysql2')
 const cors = require('cors')
 const axios = require('axios');
+require('dotenv').config(); // 追加
 
 // ポート番号
 const port = 8000
@@ -51,11 +52,20 @@ app.get('/search-shops', async (req, res) => {
 
   // 検索を行う
   const apiKey = process.env.GOOGLE_MAPS_API_KEY;
-  const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${genre}+in+${location}&key=${apiKey}`;
+  const genreEncoded = encodeURIComponent(genre); // genreをエンコード
+  const locationEncoded = encodeURIComponent(location); // locationをエンコード
+
+  const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${genreEncoded}+in+${locationEncoded}&key=${apiKey}`;
 
   try {
     const response = await axios.get(url);
+    console.log(response.data);
     const results = response.data.results;
+
+    console.log('Google Maps API Response:', results); // デバッグ用のログ
+    console.log('Google Maps API Response:', location, genre); // デバッグ用のログ
+    console.log('Google Maps API Response:', process.env.GOOGLE_MAPS_API_KEY); // デバッグ用のログ
+    console.log('Google Maps API Response:', url); // デバッグ用のログ
 
     if (results.length === 0) {
       return res.status(404).json({ error: 'No matching shops found' });
