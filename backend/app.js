@@ -2,6 +2,7 @@
 const express = require('express')
 const mysql = require('mysql2')
 const cors = require('cors')
+const axios = require('axios');
 
 // ポート番号
 const port = 8000
@@ -39,6 +40,41 @@ app.get('/sql-data', (req, res) => {
     return res.json(result)
   })
 })
+
+// Google Maps API を使用して検索を行うエンドポイント
+app.get('/search-shops', async (req, res) => {
+  const { location, genre } = req.query;
+
+  if (!location || !genre) {
+    return res.status(400).json({ error: 'Location and genre are required' });
+  }
+
+  // 検索を行う
+  const apiKey = process.env.GOOGLE_MAPS_API_KEY;
+  const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${genre}+in+${location}&key=${apiKey}`;
+
+  try {
+    const response = await axios.get(url);
+    const results = response.data.results;
+
+    if (results.length === 0) {
+      return res.status(404).json({ error: 'No matching shops found' });
+    }
+
+    // ランダムに4件選択
+    const randomShops = [];
+    while (randomShops.length < 4 && results.length > 0) {
+      const randomIndex = Math.floor(Math.random() * results.length);
+      const shop = results.splice(randomIndex, 1)[0];
+      randomShops.push(shop);
+    }
+
+    return res.json(randomShops);
+  } catch (error) {
+    console.error('Error searching shops:', error);
+    return res.status(500).json({ error: 'Error searching shops' });
+  }
+});
 
 // ランダムにジャンルを返すエンドポイント
 app.get('/random-genre', (req, res) => {
