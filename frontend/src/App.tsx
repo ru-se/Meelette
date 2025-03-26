@@ -11,6 +11,7 @@ import Shop from "./Shop"
 import ShopRoulette from "./ShopRoulette"
 import ShopResult from "./ShopResult"
 import AddShop from "./AddShop"
+import Roulette from "./Roulette"
 
 const App: React.FC = () =>{
 
@@ -35,6 +36,7 @@ const App: React.FC = () =>{
       <Route path="/ShopROulette" element={<ShopRoulette />} />
       <Route path="/ShopResult" element={<ShopResult />} />
       <Route path="/AddShop" element={<AddShop />} />
+      {/* <Route path="/Roulette" element={<Roulette />} /> */}
 
       </Routes>
       <div>
