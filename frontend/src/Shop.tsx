@@ -53,7 +53,6 @@ const DropdownList: React.FC = () => {
   const [rouletteResult, setRouletteResult] = useState<string | null>(null);
   const [isSpinning, setIsSpinning] = useState(false);
   const [rotationAngle, setRotationAngle] = useState(0);
-  const [shops, setShops] = useState<any[]>([]);
 
   const handleSpin = () => {
     if (!isValidSelection) return;
@@ -74,25 +73,7 @@ const DropdownList: React.FC = () => {
     }, spinDuration * 1000); // 3秒後に結果をセット
   };
 
-  const handleSearch = async () => {
-    if (!isValidSelection) return;
   
-    const { place, genre } = selectedOptions;
-  
-    try {
-      const response = await fetch(`http://localhost:8000/search-shops?location=${place?.label}&genre=${genre?.label}`);
-      const data = await response.json();
-  
-      if (response.ok) {
-        setShops(data);
-      } else {
-        alert(`Error: ${data.error}`);
-      }
-    } catch (error) {
-      console.error('Error searching shops:', error);
-      alert('Error searching shops');
-    }
-  };
 
   return (
     <div className="container">
@@ -133,18 +114,6 @@ const DropdownList: React.FC = () => {
         </div>
       </div>
 
-      <button onClick={handleSearch} disabled={!isValidSelection || isSpinning}>
-        検索
-      </button>
-
-      <div>
-        <h2>検索結果</h2>
-        <ul>
-          {shops.map((shop, index) => (
-            <li key={index}>{shop.name || shop.formatted_address}</li>
-          ))}
-        </ul>
-      </div>
 
       {isSpinning ? (
         <div className="roulette">ルーレットが回転中...</div>
