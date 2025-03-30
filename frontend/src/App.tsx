@@ -11,18 +11,18 @@ import Shop from "./Shop"
 import ShopRoulette from "./ShopRoulette"
 import ShopResult from "./ShopResult"
 import AddShop from "./AddShop"
-import Roulette from "./Roulette"
+// import Roulette from "./Roulette"
 
 const App: React.FC = () =>{
 
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
 
-  useEffect(() => {
-    fetch('http://localhost:8000/sql-data')
-      .then(response => response.json())
-      .then(data => setData(data))
-      .catch(error => console.error('Error fetching data:', error));
-  }, []);
+  // useEffect(() => {
+  //   fetch('http://localhost:8000/sql-data')
+  //     .then(response => response.json())
+  //     .then(data => setData(data))
+  //     .catch(error => console.error('Error fetching data:', error));
+  // }, []);
 
   return (
     <Router>
@@ -40,8 +40,8 @@ const App: React.FC = () =>{
 
       </Routes>
       <div>
-        <h1>Data from /sql-data</h1>
-        <pre>{JSON.stringify(data, null, 2)}</pre>
+        {/* <h1>Data from /sql-data</h1>
+        <pre>{JSON.stringify(data, null, 2)}</pre> */}
       </div>
     </Router>
   )
