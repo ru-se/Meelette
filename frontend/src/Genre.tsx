@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Roulette from './Roulette';
 import { useNavigate } from 'react-router-dom';
+import "./Genre.css";
 
 interface Value {
   genre: string;
@@ -45,7 +46,7 @@ const Genre: React.FC = () => {
       <h1>ルーレット画面</h1>
 
       {/* カテゴリ選択 */}
-      <label>カテゴリ</label>
+      <label>カテゴリ　</label>
       <select value={selectedAdditionalOption || ''} onChange={handleSelectAdditionalOption}>
         <option value="" disabled>選択してください</option>
         {additionalOptions.map((option) => (

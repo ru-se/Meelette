@@ -1,5 +1,20 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate,Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
+import "./Shop.css";
+import GoogleMapEmbed from './GoogleMap';  // GoogleMapコンポーネントをインポート
+
+interface Shop {
+  name: string;
+  formatted_address: string;
+  rating: number;
+  business_status: string;
+  icon?: string;  // 写真が存在する場合
+  // 必要に応じて他のフィールドも追加
+}
+
+interface MapProps {
+  shop: Shop;
+}
 
 const NextScreen: React.FC = () => {
   const location = useLocation();
@@ -7,7 +22,8 @@ const NextScreen: React.FC = () => {
   const [category, setCategory] = useState<string | null>(null);
   const [rouletteResult, setRouletteResult] = useState<string | null>(null);
   const [selectedAdditionalOption, setSelectedAdditionalOption] = useState<string | null>(null);
-  const [shopResult, setShopResult] = useState<any>(null); // 店のデータを格納
+  const [shopResult, setShopResult] = useState<Shop[]>([]); // 店のデータを格納
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (location.state) {
@@ -40,28 +56,27 @@ const NextScreen: React.FC = () => {
   const handleSubmit = () => {
     console.log("送信するデータ:", {
       location: selectedAdditionalOption,
-      category: category,
       genre: rouletteResult
     });
   
-    if (!selectedAdditionalOption && !category && !rouletteResult) {
-      console.error("エラー: location, category, genre のいずれかが必要");
+    if (!selectedAdditionalOption || !rouletteResult) {
+      console.error("エラー: location と genre の両方が必要");
       return;
     }
   
     const queryParams = new URLSearchParams({
-      location: selectedAdditionalOption || "",
-      category: category || "",
-      genre: rouletteResult || "",
+      location: selectedAdditionalOption || '',  // もしlocationが空であれば、空文字を送信
+      genre: rouletteResult || '',  // もしgenreが空であれば、空文字を送信
     });
   
-    console.log("送信するURL:", `http://localhost:8000/recommend-shop?${queryParams.toString()}`);
+    const url = `http://localhost:8000/search-shops?${queryParams.toString()}`;
+    console.log("送信するURL:", url);
   
-    fetch(`http://localhost:8000/recommend-shop?${queryParams}`)
+    fetch(url)  // 修正した部分
       .then((response) => {
         if (!response.ok) {
           return response.json().then((err) => {
-            console.error("エラー:", err);
+            console.error("サーバーエラー:", err);
             throw new Error(err.error || "サーバーエラー");
           });
         }
@@ -73,14 +88,8 @@ const NextScreen: React.FC = () => {
       })
       .catch((error) => {
         console.error("リクエストエラー:", error);
-        setShopResult(null);
       });
   };
-
-  useEffect(() => {
-    console.log("受け取ったデータ:", location.state);
-  }, [location.state]);
-  
     
   return (
     <div className="p-4 text-center">
@@ -92,8 +101,9 @@ const NextScreen: React.FC = () => {
       </div>
 
       <div className="mb-4">
-        <label className="block mb-2">場所</label>
+        <label htmlFor="location" className="block mb-2">場所</label>
         <select 
+          id="location"
           value={selectedAdditionalOption || ''} 
           onChange={handleSelectAdditionalOption} 
           className="border p-2 rounded"
@@ -109,24 +119,29 @@ const NextScreen: React.FC = () => {
 
       <button 
         onClick={handleSubmit}
-        disabled={!selectedAdditionalOption}
+        disabled={!selectedAdditionalOption || loading}
         className={`px-4 py-2 rounded text-white ${selectedAdditionalOption ? 'bg-blue-500 hover:bg-blue-600' : 'bg-gray-400 cursor-not-allowed'}`}
       >
-        店を探す
+        {loading ? '読み込み中...' : '店を探す'}
       </button>
 
       {/* バックエンドからの結果表示 */}
-      {shopResult && (
-        <div className="mt-4 p-4 border rounded">
-          <h3 className="text-lg font-bold">おすすめの店</h3>
-          <p>店名: {shopResult.shopName}</p>
-          <p>ジャンル: {shopResult.genre}</p>
-          <p>カテゴリ: {shopResult.category}</p>
-          <p>場所: {shopResult.shopPosition}</p>
+      {shopResult.length > 0 ? (
+      shopResult.map((shop, index) => (
+        <div key={index}>
+          <h3>{shop.name}</h3>
+          <p>{shop.formatted_address}</p>
+          <p>評価: {shop.rating}</p>
+          {/* 住所からGoogleMapEmbedを表示 */}
+          <GoogleMapEmbed address={shop.formatted_address} />
         </div>
-      )}
+      ))
+    ) : (
+      <p>お店が見つかりませんでした。</p>
+    )}
     </div>
   );
 };
 
 export default NextScreen;
+

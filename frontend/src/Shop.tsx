@@ -1,6 +1,13 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './Shop.css'; // 必要なスタイルを指定
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import "./Shop.css";
+import Roulette from "./Roulette";
+
+interface Shop {
+  name: string;
+  formatted_address: string;
+  rating: number;
+}
 
 interface Option {
   value: string;
@@ -16,26 +23,30 @@ const DropdownList: React.FC = () => {
     genre: null,
   });
 
+  const [rouletteResult, setRouletteResult] = useState<string | null>(null);
+  const [shopResult, setShopResult] = useState<Shop[]>([]);
+  const [loading, setLoading] = useState(false);
+
   const dropdownOptions: { [key: string]: Option[] } = {
     place: [
-      { value: 'umeda', label: '梅田' },
-      { value: 'nmba', label: '難波' },
-      { value: 'shinsaibai', label: '心斎橋' },
-      { value: 'tennouji', label: '天王寺' },
+      { value: "umeda", label: "梅田" },
+      { value: "nmba", label: "難波" },
+      { value: "shinsaibai", label: "心斎橋" },
+      { value: "tennouji", label: "天王寺" },
     ],
     category: [
-      { value: 'morning', label: 'モーニング' },
-      { value: 'lunch', label: 'ランチ' },
-      { value: 'cafetime', label: 'カフェタイム' },
-      { value: 'dinner', label: 'ディナー' },
+      { value: "morning", label: "モーニング" },
+      { value: "lunch", label: "ランチ" },
+      { value: "cafetime", label: "カフェタイム" },
+      { value: "dinner", label: "ディナー" },
     ],
     genre: [
-      { value: 'western', label: '洋食' },
-      { value: 'japanese', label: '和食' },
-      { value: 'chinese', label: '中華' },
-      { value: 'Ramen', label: 'ラーメン' },
-      { value: 'cafe', label: 'カフェ' },
-      { value: 'korea', label: '韓国料理' },
+      { value: "western", label: "洋食" },
+      { value: "japanese", label: "和食" },
+      { value: "chinese", label: "中華" },
+      { value: "ramen", label: "ラーメン" },
+      { value: "cafe", label: "カフェ" },
+      { value: "korea", label: "韓国料理" },
     ],
   };
 
@@ -50,27 +61,31 @@ const DropdownList: React.FC = () => {
 
   const isValidSelection = Object.values(selectedOptions).every((option) => option !== null);
 
-  const [rouletteResult, setRouletteResult] = useState<string | null>(null);
-  const [isSpinning, setIsSpinning] = useState(false);
-  const [rotationAngle, setRotationAngle] = useState(0);
+  const handleSubmit = () => {
+    if (!selectedOptions.place?.label || !rouletteResult) {
+      console.error("エラー: location と genre の両方が必要");
+      return;
+    }
 
-  const handleSpin = () => {
-    if (!isValidSelection) return;
+    setLoading(true);
 
-    setIsSpinning(true);
-    setRouletteResult(null);
+    const queryParams = new URLSearchParams({
+      location: selectedOptions.place?.label || "",
+      genre: rouletteResult || "",
+    });
 
-    const spinDuration = 5; // 秒
-    const rotation = 360 * 5 + Math.floor(Math.random() * 360); // ランダムな回転角度
+    const url = `http://localhost:8000/search-shops?${queryParams.toString()}`;
 
-    setRotationAngle(rotation);
-
-    setTimeout(() => {
-      const options = ['勝ち', '負け', '再挑戦', 'チャンス'];
-      const randomResult = options[Math.floor(Math.random() * options.length)];
-      setRouletteResult(randomResult);
-      setIsSpinning(false);
-    }, spinDuration * 1000); // 3秒後に結果をセット
+    fetch(url)
+      .then((response) => response.ok ? response.json() : Promise.reject(response))
+      .then((data) => {
+        setShopResult(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("リクエストエラー:", error);
+        setLoading(false);
+      });
   };
 
   return (
@@ -79,11 +94,9 @@ const DropdownList: React.FC = () => {
 
       {Object.keys(dropdownOptions).map((dropdownName) => (
         <div key={dropdownName} className="dropdown">
-          <label>{dropdownName === 'place' ? '場所' : dropdownName === 'category' ? 'カテゴリ' : 'ジャンル'}</label>
-          <select value={selectedOptions[dropdownName]?.value || ''} onChange={(event) => handleSelectOption(dropdownName, event)}>
-            <option value="" disabled>
-              選択してください
-            </option>
+          <label>{dropdownName === "place" ? "場所" : dropdownName === "category" ? "カテゴリ" : "ジャンル"}</label>
+          <select value={selectedOptions[dropdownName]?.value || ""} onChange={(event) => handleSelectOption(dropdownName, event)}>
+            <option value="" disabled>選択してください</option>
             {dropdownOptions[dropdownName].map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
@@ -93,34 +106,30 @@ const DropdownList: React.FC = () => {
         </div>
       ))}
 
-      <button onClick={handleSpin} disabled={!isValidSelection || isSpinning}>
-        回す
-      </button>
+      {/* ルーレットコンポーネント */}
+      {/* <Roulette options={dropdownOptions.genre} onSpinComplete={setRouletteResult} /> */}
 
-      <div 
-        className={`roulette-wheel ${isSpinning ? 'spinning' : ''}`} 
-        style={{ transform: `rotate(${rotationAngle}deg)` }}
-      >
-        <div className="wheel">
-          {/* 放射状に分割されたセクション */}
-          <div className="segment" style={{ backgroundColor: 'red', transform: 'rotate(0deg)' }}></div>
-          <div className="segment" style={{ backgroundColor: 'blue', transform: 'rotate(60deg)' }}></div>
-          <div className="segment" style={{ backgroundColor: 'green', transform: 'rotate(120deg)' }}></div>
-          <div className="segment" style={{ backgroundColor: 'yellow', transform: 'rotate(180deg)' }}></div>
-          <div className="segment" style={{ backgroundColor: 'purple', transform: 'rotate(240deg)' }}></div>
-          <div className="segment" style={{ backgroundColor: 'orange', transform: 'rotate(300deg)' }}></div>
-        </div>
+      <div className="roulette">
+        {rouletteResult ? `結果: ${rouletteResult}` : "結果を待機中"}
       </div>
 
-      {isSpinning ? (
-        <div className="roulette">ルーレットが回転中...</div>
-      ) : rouletteResult ? (
-        <div className="result">
-          <h3>結果: {rouletteResult}</h3>
-        </div>
-      ) : (
-        <div className="roulette">結果が表示されるまでお待ちください</div>
-      )}
+      <button onClick={handleSubmit} disabled={!rouletteResult || loading}>
+        {loading ? "検索中..." : "店を探す"}
+      </button>
+
+      <div className="shop-list">
+        {shopResult.length > 0 ? (
+          shopResult.map((shop, index) => (
+            <div key={index} className="shop-item">
+              <h3>{shop.name}</h3>
+              <p>住所: <Link to={`/map?address=${encodeURIComponent(shop.formatted_address)}`}>{shop.formatted_address}</Link></p>
+              <p>評価: {shop.rating}</p>
+            </div>
+          ))
+        ) : (
+          <p>お店が見つかりませんでした。</p>
+        )}
+      </div>
     </div>
   );
 };
