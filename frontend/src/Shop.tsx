@@ -1,31 +1,32 @@
-import React, { useState } from "react";
+// Shop.tsx
+import React, { useState } from 'react';
+import Roulette from './Roulette';
 import { useNavigate, Link } from "react-router-dom";
+import GoogleMapEmbed from './GoogleMap';  // GoogleMapコンポーネントをインポート
 import "./Shop.css";
-import Roulette from "./Roulette";
-
-interface Shop {
-  name: string;
-  formatted_address: string;
-  rating: number;
-}
 
 interface Option {
   value: string;
   label: string;
 }
 
-const DropdownList: React.FC = () => {
-  const navigate = useNavigate();
+interface Shop {
+  name: string;
+  formatted_address: string;
+  rating: number;
+  business_status: string;
+  icon?: string;
+}
 
+const Shop: React.FC = () => {
+  const [isSpinning, setIsSpinning] = useState(false);
+  const navigate = useNavigate();
+  const [shopResult, setShopResult] = useState<Shop[]>([]);
   const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: Option | null }>({
     place: null,
     category: null,
     genre: null,
   });
-
-  const [rouletteResult, setRouletteResult] = useState<string | null>(null);
-  const [shopResult, setShopResult] = useState<Shop[]>([]);
-  const [loading, setLoading] = useState(false);
 
   const dropdownOptions: { [key: string]: Option[] } = {
     place: [
@@ -50,52 +51,48 @@ const DropdownList: React.FC = () => {
     ],
   };
 
-  const handleSelectOption = (dropdownName: string, event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedValue = event.target.value;
-    const selected = dropdownOptions[dropdownName].find((option) => option.value === selectedValue);
+  // 🔹 選択肢を変更する関数
+  const handleSelectChange = (dropdownName: string, value: string) => {
     setSelectedOptions((prev) => ({
       ...prev,
-      [dropdownName]: selected || null,
+      [dropdownName]: dropdownOptions[dropdownName].find((option) => option.value === value) || null,
     }));
   };
 
-  const isValidSelection = Object.values(selectedOptions).every((option) => option !== null);
+  // 🔹 ルーレットが終了したらデータを取得
+  const handleSpinComplete = () => {
+    console.log("ルーレットの回転が終了しました。データを取得します。");
 
-  const handleSubmit = () => {
-    if (!selectedOptions.place?.label || !rouletteResult) {
-      console.error("エラー: location と genre の両方が必要");
+    if (!selectedOptions.place || !selectedOptions.genre) {
+      console.error("エラー: 場所とジャンルの選択が必要です");
       return;
     }
 
-    setLoading(true);
-
     const queryParams = new URLSearchParams({
-      location: selectedOptions.place?.label || "",
-      genre: rouletteResult || "",
+      location: selectedOptions.place.label,
+      genre: selectedOptions.genre.label,
     });
 
-    const url = `http://localhost:8000/search-shops?${queryParams.toString()}`;
-
-    fetch(url)
-      .then((response) => response.ok ? response.json() : Promise.reject(response))
-      .then((data) => {
-        setShopResult(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("リクエストエラー:", error);
-        setLoading(false);
-      });
+    fetch(`http://localhost:8000/search-shops?${queryParams.toString()}`)
+      .then(response => response.json())
+      .then(data => setShopResult(data))
+      .catch(error => console.error("リクエストエラー:", error));
   };
 
   return (
-    <div className="container">
-      <h2>お店検索</h2>
+    <div style={{ textAlign: 'center', padding: '20px' }}>
+      <h1>ルーレット画面</h1>
 
+      {/* 🔹 ドロップダウン選択 */}
       {Object.keys(dropdownOptions).map((dropdownName) => (
         <div key={dropdownName} className="dropdown">
-          <label>{dropdownName === "place" ? "場所" : dropdownName === "category" ? "カテゴリ" : "ジャンル"}</label>
-          <select value={selectedOptions[dropdownName]?.value || ""} onChange={(event) => handleSelectOption(dropdownName, event)}>
+          <label>
+            {dropdownName === "place" ? "　場所　" : dropdownName === "category" ? "カテゴリ" : "ジャンル"}
+          </label>
+          <select
+            value={selectedOptions[dropdownName]?.value || ""}
+            onChange={(event) => handleSelectChange(dropdownName, event.target.value)}
+          >
             <option value="" disabled>選択してください</option>
             {dropdownOptions[dropdownName].map((option) => (
               <option key={option.value} value={option.value}>
@@ -106,32 +103,29 @@ const DropdownList: React.FC = () => {
         </div>
       ))}
 
-      {/* ルーレットコンポーネント */}
-      {/* <Roulette options={dropdownOptions.genre} onSpinComplete={setRouletteResult} /> */}
+      {/* 🔹 ルーレット表示 */}
+      <Roulette onSpinComplete={handleSpinComplete} />
 
-      <div className="roulette">
-        {rouletteResult ? `結果: ${rouletteResult}` : "結果を待機中"}
-      </div>
-
-      <button onClick={handleSubmit} disabled={!rouletteResult || loading}>
-        {loading ? "検索中..." : "店を探す"}
-      </button>
-
-      <div className="shop-list">
-        {shopResult.length > 0 ? (
-          shopResult.map((shop, index) => (
-            <div key={index} className="shop-item">
-              <h3>{shop.name}</h3>
-              <p>住所: <Link to={`/map?address=${encodeURIComponent(shop.formatted_address)}`}>{shop.formatted_address}</Link></p>
-              <p>評価: {shop.rating}</p>
-            </div>
-          ))
-        ) : (
-          <p>お店が見つかりませんでした。</p>
-        )}
-      </div>
+      {/* 🔹 結果表示エリア */}
+      {isSpinning ? (
+        <p>ルーレットが回転中...</p>
+      ) : shopResult.length > 0 ? (
+        shopResult.map((shop, index) => (
+          <div key={index}>
+            <h3>{shop.name}</h3>
+            <p>{shop.formatted_address}</p>
+            <p>評価: {shop.rating}</p>
+            {/* 住所からGoogleMapEmbedを表示 */}
+            <GoogleMapEmbed address={shop.formatted_address} />
+            
+          </div>
+        ))
+      ) : (
+        <p>お店が見つかりませんでした。</p>
+      )}
+      <button onClick={() => navigate('/')}>トップへ</button>
     </div>
   );
 };
 
-export default DropdownList;
+export default Shop;

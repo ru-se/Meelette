@@ -6,10 +6,9 @@ import Select from "./Select"
 import Genre from "./Genre"
 import GenreRoulette from "./GenreRoulette"
 import GenreResult from "./GenreResult"
-import Shoptest from "./Shopteat"
 import ShopRoulette from "./ShopRoulette"
 import ShopResult from "./ShopResult"
-import AddShop from "./AddShop"
+import Shop from "./Shop"
 // import Roulette from "./Roulette"
 import MapPage from "./ShopResult";
 import Map from './Map'; 
@@ -25,10 +24,9 @@ const App: React.FC = () =>{
       <Route path="/Genre" element={<Genre />} />
       <Route path="/GenreRoulette" element={<GenreRoulette />} />
       <Route path="/GenreResult" element={<GenreResult />} />
-      <Route path="/Shoptest" element={<Shoptest />} />
       <Route path="/ShopRoulette" element={<ShopRoulette />} />
       {/* <Route path="/ShopResult" element={<ShopResult />} /> */}
-      <Route path="/AddShop" element={<AddShop />} />
+      <Route path="/Shop" element={<Shop />} />
       {/* <Route path="/Roulette" element={<Roulette />} /> */}
       <Route path="/map" element={<MapPage />} />
       <Route path="/map" element={<Map />} /> 
@@ -37,16 +35,6 @@ const App: React.FC = () =>{
      
 
       </Routes>
-      {/* <script
-        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&libraries=places&async=1,`}
-        async
-        defer
-      ></script> */}
-
-        {/* <script
-          src={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&libraries=places,marker&callback=initMap`}
-          async
-        ></script> */}
 
         <script
           src={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&libraries=places,marker&async=1`}

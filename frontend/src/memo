@@ -18,7 +18,7 @@ interface Shop {
   icon?: string;
 }
 
-const Shop: React.FC = () => {
+const Shoptest: React.FC = () => {
   const [isSpinning, setIsSpinning] = useState(false);
   const navigate = useNavigate();
   const [shopResult, setShopResult] = useState<Shop[]>([]);
@@ -128,4 +128,4 @@ const Shop: React.FC = () => {
   );
 };
 
-export default Shop;
+export default Shoptest;
