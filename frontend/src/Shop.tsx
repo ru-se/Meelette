@@ -73,6 +73,7 @@ const Shop: React.FC = () => {
       genre: selectedOptions.genre.label,
     });
 
+   console.log(process.env.REACT_APP_BACKEND_URL); 
     fetch(`${process.env.REACT_APP_BACKEND_URL}/search-shops?${queryParams.toString()}`)
       .then(response => response.json())
       .then(data => setShopResult(data))
