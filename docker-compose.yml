@@ -1,22 +1,35 @@
+version: '3'
+
 services:
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile  # 明示的にDockerfileを指定（通常はデフォルトで使用されるが明示的に記載）
     ports:
-      - "8000:8000"
+      - "8000:8000"  # バックエンドのポート
     volumes:
       - ./backend:/usr/src/app
     restart: always
+    environment:
+      - NODE_ENV=production  # 必要に応じて環境変数を設定（例：Node.jsの場合）
 
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile  # フロントエンドのDockerfile
     ports:
-      - "3000:80"
+      - "80:80"  # フロントエンドのポート（通常は80ポートでHTTPを提供）
     volumes:
       - ./frontend:/usr/src/app:delegated
     depends_on:
-      - backend
+      - backend  # バックエンドが起動してからフロントエンドを起動
     restart: always
+    environment:
+      - NODE_ENV=production  # 必要に応じて環境変数を設定
+    # 環境変数を使ってバックエンドとフロントエンドが通信できるように設定することができる
+    extra_hosts:
+      - "backend:host.docker.internal"  # バックエンドへのホスト名を明示的に指定
+
+volumes:
+  backend-data: {}  # バックエンド用のデータボリューム（必要に応じて）
+  frontend-data: {}  # フロントエンド用のデータボリューム（必要に応じて）
