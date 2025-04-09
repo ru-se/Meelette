@@ -21,5 +21,10 @@ FROM nginx:alpine
 COPY --from=build /usr/src/app/build /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/nginx.conf
 
+COPY ./frontend/nginx.conf /etc/nginx/nginx.conf
+
+# frontendディレクトリ内のビルド済みアプリケーションをnginxのhtmlディレクトリにコピー
+COPY ./frontend/build /usr/share/nginx/html
+
 # `conf.d/` ディレクトリに `default.conf` を作成
 RUN echo 'server { listen 80; server_name localhost; location / { root /usr/share/nginx/html; index index.html index.htm; try_files $uri $uri/ /index.html; } }' > /etc/nginx/conf.d/default.conf
