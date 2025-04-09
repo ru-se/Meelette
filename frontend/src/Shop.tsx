@@ -73,7 +73,7 @@ const Shop: React.FC = () => {
       genre: selectedOptions.genre.label,
     });
 
-    fetch(`http://localhost:8000/search-shops?${queryParams.toString()}`)
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/search-shops?${queryParams.toString()}`)
       .then(response => response.json())
       .then(data => setShopResult(data))
       .catch(error => console.error("リクエストエラー:", error));

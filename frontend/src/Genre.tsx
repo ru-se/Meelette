@@ -29,7 +29,7 @@ const Genre: React.FC = () => {
     setIsSpinning(false); // ここで回転状態を解除（すぐに次の操作が可能になる）
 
     try {
-      const response = await fetch('http://localhost:8000/random-genre');
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/random-genre`);
       if (!response.ok) {
         throw new Error('サーバーエラー');
       }
