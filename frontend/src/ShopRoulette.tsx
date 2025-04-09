@@ -69,7 +69,7 @@ const NextScreen: React.FC = () => {
       genre: rouletteResult || '',  // もしgenreが空であれば、空文字を送信
     });
   
-    const url = `http://localhost:8000/search-shops?${queryParams.toString()}`;
+    const url = `${process.env.REACT_APP_BACKEND_URL}/search-shops?${queryParams.toString()}`;
     console.log("送信するURL:", url);
   
     fetch(url)  // 修正した部分
