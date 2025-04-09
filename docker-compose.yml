@@ -1,14 +1,12 @@
-version: '3.8'
-
 services:
   backend:
     build:
-      context: ../backend
-      dockerfile: ../backend/Dockerfile
+      context: ./backend
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     volumes:
-      - ../backend:/usr/src/app
+      - ./backend:/usr/src/app
     environment:
       DB_HOST: db
       DB_USER: admin
@@ -21,12 +19,12 @@ services:
 
   frontend:
     build:
-      context: ../frontend
+      context: ./frontend
       dockerfile: Dockerfile
     ports:
       - "3000:80"
     volumes:
-      - ../frontend:/usr/src/app:delegated
+      - ./frontend:/usr/src/app:delegated
     depends_on:
       - backend
     restart: always
@@ -44,7 +42,7 @@ services:
       MYSQL_PASSWORD: Lana_0703
     volumes:
       - db_data:/var/lib/mysql
-      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
+      - ./backend/dump.sql:/docker-entrypoint-initdb.d/dump.sql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uadmin", "-pLana_0703"]
       interval: 10s
