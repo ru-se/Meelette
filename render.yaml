@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: backend
+    env: docker
+    repo: https://github.com/your-user/your-repo
+    dockerfilePath: backend/Dockerfile
+    envVars:
+      - key: PORT
+        value: 8000
+    autoDeploy: true
+    plan: free
+
+  - type: web
+    name: frontend
+    env: docker
+    repo: https://github.com/your-user/your-repo
+    dockerfilePath: frontend/Dockerfile
+    envVars:
+      - key: REACT_APP_BACKEND_URL
+        value: https://meelette-backend.onrender.com  # バックエンドのURLを指定
+    dependsOn:
+      - backend
+    autoDeploy: true
+    plan: free
