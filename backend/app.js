@@ -39,6 +39,7 @@ app.get('/search-shops', async (req, res) => {
     console.log('Google Maps API Response:', location, genre); // デバッグ用のログ
     console.log('Google Maps API Response:', process.env.GOOGLE_MAPS_API_KEY); // デバッグ用のログ
     console.log('Google Maps API Response:', url); // デバッグ用のログ
+    console.log('Google Maps API Response:', response.data); // デバッグ用のログ
 
     if (results.length === 0) {
       return res.status(404).json({ error: 'No matching shops found' });
