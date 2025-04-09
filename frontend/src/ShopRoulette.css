@@ -1,0 +1,51 @@
+.roulette-container {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.roulette-wheel {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 5px solid black;
+  position: relative;
+  margin: 20px auto;
+  overflow: hidden;
+  transition: transform 3s ease-out;
+}
+
+.roulette-pointer {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 20px solid black;
+  transform: translateX(-50%);
+}
+
+.roulette-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  display: block;
+  margin: 0 auto;
+}
+
+.roulette-button:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+.result-text {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 10px;
+}
