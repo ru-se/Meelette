@@ -7,14 +7,6 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/usr/src/app
-    environment:
-      DB_HOST: db
-      DB_USER: admin
-      DB_PASSWORD: Lana_0703
-      DB_DATABASE: Meelette
-    depends_on:
-      db:
-        condition: service_healthy  # DBの準備が完了するまで待機
     restart: always
 
   frontend:
@@ -28,27 +20,3 @@ services:
     depends_on:
       - backend
     restart: always
-
-  db:
-    image: mysql:8.0
-    container_name: db
-    platform: linux/amd64
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: Lana_0703
-      MYSQL_DATABASE: Meelette
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: Lana_0703
-    volumes:
-      - db_data:/var/lib/mysql
-      - ./backend/dump.sql:/docker-entrypoint-initdb.d/dump.sql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uadmin", "-pLana_0703"]
-      interval: 10s
-      retries: 5
-      timeout: 5s
-    restart: always
-
-volumes:
-  db_data:
