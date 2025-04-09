@@ -5,7 +5,6 @@ services:
     plan: free  # 必要に応じてプランを変更
     dockerfilePath: ./backend/Dockerfile  # Dockerfileのパス
     buildCommand: docker build -t backend ./backend  # ビルドコマンド
-    startCommand: docker run -p 8000:8000 backend  # 起動コマンド
     envVars:
       - key: NODE_ENV
         value: production  # 環境変数の設定
@@ -16,7 +15,6 @@ services:
     plan: free  # 必要に応じてプランを変更
     dockerfilePath: ./frontend/Dockerfile  # Dockerfileのパス
     buildCommand: docker build -t frontend ./frontend  # ビルドコマンド
-    startCommand: docker run -p 80:80 frontend  # 起動コマンド
     envVars:
       - key: NODE_ENV
         value: production  # 環境変数の設定
