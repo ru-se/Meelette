@@ -134,12 +134,23 @@ const NextScreen: React.FC = () => {
           <p>評価: {shop.rating}</p>
           {/* 住所からGoogleMapEmbedを表示 */}
           <GoogleMapEmbed address={shop.formatted_address} />
+
+         
+             <button onClick={() => navigate('/')}>トップへ</button>
+       
+
+
         </div>
+        
+        
       ))
     ) : (
       <p>お店が見つかりませんでした。</p>
     )}
+
     </div>
+
+    
   );
 };
 

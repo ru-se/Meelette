@@ -88,6 +88,17 @@
   .spinning {
     animation: spin 5s ease-out;
   }
+
+  .footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+    padding: 16px;
+    text-align: center;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+  }
   
   @keyframes spin {
     0% {
