@@ -12,7 +12,10 @@ const app = express() // expressを実行
 app.use(express.json()) //jsonのリクエスト/レスポンスを正しく受け取る為に必要
 app.use(cors()) // corsを有効にする
 
-
+// ハローワールドを表示するエンドポイント
+app.get('/helloworld', (req, res) => {
+  res.send('Hello World!')
+})
 
 
 // Google Maps API を使用して検索を行うエンドポイント
