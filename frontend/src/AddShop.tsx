@@ -16,7 +16,7 @@ const AddShop: React.FC = () => {
     const newShop = { shopName, shopPosition, category, genre, place, shopInfo };
 
     try {
-      const response = await fetch('http://localhost:8000/add-shop', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/add-shop`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
