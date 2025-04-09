@@ -24,9 +24,9 @@ services:
       context: ../frontend
       dockerfile: Dockerfile
     ports:
-      - "3000:80"
-    volumes:
-      - ../frontend:/usr/src/app:delegated
+      - "3000:80" 
+    # volumes:
+    #   - ../frontend:/usr/src/app:delegated
     depends_on:
       - backend
     restart: always

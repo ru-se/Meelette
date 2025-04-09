@@ -44,7 +44,10 @@ app.get('/sql-data', (req, res) => {
 
 // Google Maps API を使用して検索を行うエンドポイント
 app.get('/search-shops', async (req, res) => {
+  console.log('Received query parameters:', req.query); // クエリパラメータをログに出力
+  
   const { location, genre } = req.query;
+
 
   if (!location || !genre) {
     return res.status(400).json({ error: 'Location and genre are required' });
@@ -88,7 +91,7 @@ app.get('/search-shops', async (req, res) => {
 
 // ランダムにジャンルを返すエンドポイント
 app.get('/random-genre', (req, res) => {
-  const genres = ['洋食', '和食', '中華', 'ラーメン', 'カフェ', '韓国料理'];
+  const genres = ['中華', '洋食', '和食', 'カフェ', '韓国料理', 'ラーメン'];
   const randomGenre = genres[Math.floor(Math.random() * genres.length)];
   return res.json({ genre: randomGenre });
 });
