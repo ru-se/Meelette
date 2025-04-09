@@ -9,9 +9,6 @@ services:
     envVars:
       - key: NODE_ENV
         value: production  # 環境変数の設定
-    volumes:
-      - volumeName: backend-data  # バックエンド用のデータボリューム
-    restartPolicy: always  # サービスの再起動ポリシー
 
   - name: frontend
     type: web
@@ -23,15 +20,3 @@ services:
     envVars:
       - key: NODE_ENV
         value: production  # 環境変数の設定
-    dependsOn:
-      - backend  # バックエンドが起動するまで待機
-    volumes:
-      - volumeName: frontend-data  # フロントエンド用のデータボリューム
-    extraHosts:
-      - name: backend
-        value: host.docker.internal  # バックエンドへのホスト名設定
-    restartPolicy: always  # サービスの再起動ポリシー
-
-volumes:
-  - name: backend-data
-  - name: frontend-data
