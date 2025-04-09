@@ -1,24 +1,37 @@
 services:
-  - type: web
-    name: backend
+  - name: backend
+    type: web
     env: docker
-    repo: https://github.com/ru-se/Meelette
-    dockerfilePath: backend/Dockerfile
+    plan: free  # 必要に応じてプランを変更
+    dockerfilePath: ./backend/Dockerfile  # Dockerfileのパス
+    buildCommand: docker build -t backend ./backend  # ビルドコマンド
+    startCommand: docker run -p 8000:8000 backend  # 起動コマンド
     envVars:
-      - key: PORT
-        value: 8000
-      - key: GOOGLE_MAPS_API_KEY
-        value: your_google_maps_api_key
-    autoDeploy: true
-    plan: free
+      - key: NODE_ENV
+        value: production  # 環境変数の設定
+    volumes:
+      - volumeName: backend-data  # バックエンド用のデータボリューム
+    restartPolicy: always  # サービスの再起動ポリシー
 
-  - type: web
-    name: frontend
+  - name: frontend
+    type: web
     env: docker
-    repo: https://github.com/ru-se/Meelette
-    dockerfilePath: frontend/Dockerfile
+    plan: free  # 必要に応じてプランを変更
+    dockerfilePath: ./frontend/Dockerfile  # Dockerfileのパス
+    buildCommand: docker build -t frontend ./frontend  # ビルドコマンド
+    startCommand: docker run -p 80:80 frontend  # 起動コマンド
     envVars:
-      - key: REACT_APP_API_URL
-        value: https://backend.onrender.com  # バックエンドのURL
-    autoDeploy: true
-    plan: free
+      - key: NODE_ENV
+        value: production  # 環境変数の設定
+    dependsOn:
+      - backend  # バックエンドが起動するまで待機
+    volumes:
+      - volumeName: frontend-data  # フロントエンド用のデータボリューム
+    extraHosts:
+      - name: backend
+        value: host.docker.internal  # バックエンドへのホスト名設定
+    restartPolicy: always  # サービスの再起動ポリシー
+
+volumes:
+  - name: backend-data
+  - name: frontend-data
