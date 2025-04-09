@@ -21,7 +21,7 @@ FROM nginx:alpine
 COPY --from=build /usr/src/app/build /usr/share/nginx/html
 
 # 正しいパスを指定（frontendディレクトリ内にnginx.confがある場合）
-COPY ./frontend/nginx.conf /etc/nginx/nginx.conf
+COPY ./nginx.conf /etc/nginx/nginx.conf
 
 # `conf.d/` ディレクトリに `default.conf` を作成
 RUN echo 'server { listen 80; server_name localhost; location / { root /usr/share/nginx/html; index index.html index.htm; try_files $uri $uri/ /index.html; } }' > /etc/nginx/conf.d/default.conf
