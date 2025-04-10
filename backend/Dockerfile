@@ -8,6 +8,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
 
+
 # アプリのコードをコピー
 COPY . .
 
@@ -16,3 +17,5 @@ EXPOSE 8000
 
 # サーバーを起動
 CMD ["node", "app.js"]
+
+# COPY ./src /app/src

@@ -26,33 +26,41 @@ app.get('/search-shops', async (req, res) => {
     return res.status(400).json({ error: 'Location and genre are required' });
   }
 
-  // 検索を行う
   const apiKey = process.env.GOOGLE_MAPS_API_KEY;
-  const genreEncoded = encodeURIComponent(genre); // genreをエンコード
-  const locationEncoded = encodeURIComponent(location); // locationをエンコード
+  const genreEncoded = encodeURIComponent(genre);
+  const locationEncoded = encodeURIComponent(location);
 
   const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${genreEncoded}+in+${locationEncoded}&key=${apiKey}`;
 
   try {
     const response = await axios.get(url);
-    console.log(response.data);
     const results = response.data.results;
 
-    console.log('Google Maps API Response:', results); // デバッグ用のログ
-    console.log('Google Maps API Response:', location, genre); // デバッグ用のログ
-    console.log('Google Maps API Response:', process.env.GOOGLE_MAPS_API_KEY); // デバッグ用のログ
-    console.log('Google Maps API Response:', url); // デバッグ用のログ
-    console.log('Google Maps API Response:', response.data); // デバッグ用のログ
-
-    if (results.length === 0) {
+    if (!results || results.length === 0) {
       return res.status(404).json({ error: 'No matching shops found' });
+    }
+
+    // 飲食店以外や指定されたジャンルに合わないものを除外
+    const filteredResults = results.filter((shop) => {
+      const types = shop.types || [];
+      return (
+        types.includes('restaurant') || // 飲食店であることを確認
+        types.includes('food') || // 食品関連であることを確認
+        types.includes('cafe') // カフェも含む
+      );
+    });
+
+    if (filteredResults.length === 0) {
+      return res.status(404).json({ error: 'No matching shops found after filtering' });
     }
 
     // ランダムに4件選択
     const randomShops = [];
-    while (randomShops.length < 4 && results.length > 0) {
-      const randomIndex = Math.floor(Math.random() * results.length);
-      const shop = results.splice(randomIndex, 1)[0];
+    while (randomShops.length < 4 && filteredResults.length > 0) {
+      const randomIndex = Math.floor(Math.random() * filteredResults.length);
+      const shop = filteredResults.splice(randomIndex, 1)[0];
+
+
       randomShops.push(shop);
     }
 
@@ -63,9 +71,10 @@ app.get('/search-shops', async (req, res) => {
   }
 });
 
+
 // ランダムにジャンルを返すエンドポイント
 app.get('/random-genre', (req, res) => {
-  const genres = ['洋食', '和食', '中華', 'ラーメン', 'カフェ', '韓国料理'];
+  const genres = ['中華', '洋食', '和食', 'カフェ', '韓国料理', 'ラーメン'];
   const randomGenre = genres[Math.floor(Math.random() * genres.length)];
   return res.json({ genre: randomGenre });
 });

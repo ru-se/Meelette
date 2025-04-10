@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import './Roulette.css';
 
 interface RouletteProps {
-  onSpinComplete: () => void; // 修正: 引数なし
+  onSpinComplete: () => void;
 }
 
 const Roulette: React.FC<RouletteProps> = ({ onSpinComplete }) => {
@@ -11,53 +12,31 @@ const Roulette: React.FC<RouletteProps> = ({ onSpinComplete }) => {
   const handleSpin = () => {
     setIsSpinning(true);
 
-    // ルーレットの回転（最低5周）
+    // ルーレットの回転（最低5周 + ランダムな角度）
     const rotation = 360 * 5 + Math.floor(Math.random() * 360);
     setRotationAngle(rotation);
 
     setTimeout(() => {
       setIsSpinning(false);
-      onSpinComplete(); // 修正: 何も渡さず通知
-    }, 5000);
+      onSpinComplete();
+    }, 5000); // 回転時間を5秒に設定
   };
 
   return (
-    <div style={{ textAlign: 'center', marginTop: '50px' }}>
-      <button onClick={handleSpin} disabled={isSpinning}>
+    <div className="roulette-container">
+      <div
+        className={`roulette-wheel ${isSpinning ? 'spinning' : ''}`}
+        style={{
+          transform: `rotate(${rotationAngle}deg)`,
+        }}
+      >
+        {Array.from({ length: 6 }).map((_, index) => (
+          <div key={index} className="roulette-section" />
+        ))}
+      </div>
+      <button onClick={handleSpin} disabled={isSpinning} className="roulette-button">
         {isSpinning ? 'ルーレット中...' : '回す'}
       </button>
-
-      <div
-  style={{
-    width: '300px',
-    height: '300px',
-    borderRadius: '50%',
-    border: '5px solid black',
-    margin: '20px auto',
-    position: 'relative', // 相対位置
-    overflow: 'hidden', // はみ出し防止
-    clipPath: 'circle(50%)', // 円形クリッピング
-    transform: `rotate(${rotationAngle}deg)`,
-    transition: 'transform 5s ease-out',
-  }}
->
-  {/* ルーレットの模様 */}
-  {['red', 'blue', 'green', 'yellow', 'purple', 'orange'].map((color, index) => (
-    <div
-      key={index}
-      style={{
-        position: 'absolute',
-        width: '50%', // 円の半径分
-        height: '50%', // 半径分
-        backgroundColor: color,
-        clipPath: 'polygon(100% 100%, 0 0, 100% 1)', // きれいな扇形
-        transformOrigin: '100% 100%', // 扇形の回転軸
-        transform: `rotate(${index * (360 / 6)}deg)`, // 各扇形を回転
-      }}
-    />
-  ))}
-</div>
-
     </div>
   );
 };
