@@ -20,10 +20,7 @@ app.get('/helloworld', (req, res) => {
 
 // Google Maps API を使用して検索を行うエンドポイント
 app.get('/search-shops', async (req, res) => {
-  console.log('Received query parameters:', req.query); // クエリパラメータをログに出力
-  
   const { location, genre } = req.query;
-
 
   if (!location || !genre) {
     return res.status(400).json({ error: 'Location and genre are required' });
@@ -73,7 +70,6 @@ app.get('/search-shops', async (req, res) => {
     return res.status(500).json({ error: 'Error searching shops' });
   }
 });
-
 
 
 // ランダムにジャンルを返すエンドポイント

@@ -30,15 +30,8 @@ const Roulette: React.FC<RouletteProps> = ({ onSpinComplete }) => {
           transform: `rotate(${rotationAngle}deg)`,
         }}
       >
-        {['#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#FFC300', '#8E44AD'].map((color, index) => (
-          <div
-            key={index}
-            className="roulette-section"
-            style={{
-              backgroundColor: color,
-              transform: `rotate(${index * 60}deg) skewY(-30deg)`,
-            }}
-          />
+        {Array.from({ length: 6 }).map((_, index) => (
+          <div key={index} className="roulette-section" />
         ))}
       </div>
       <button onClick={handleSpin} disabled={isSpinning} className="roulette-button">

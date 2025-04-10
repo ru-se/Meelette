@@ -1,80 +1,80 @@
 body {
-    background-color: #fff7e6;
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-    color: #5a3e2b;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    min-height: 100vh;
-    overflow-y: auto;
-  }
-  
+  background-color: #fff7e6;
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  color: #5a3e2b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+h1 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  color: #d2691e;
+}
+
+.startButton {
+  background-color: #ffcc80;
+  color: #5a3e2b;
+  border: none;
+  border-radius: 10px;
+  padding: 15px 30px;
+  font-size: 1.2em;
+  cursor: pointer;
+  margin-top: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.startButton:hover {
+  background-color: #ffa726;
+}
+
+.ex {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #fff;
+  border: 2px solid #d2691e;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  text-align: left;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
   h1 {
-    font-size: 2.5em;
-    margin-bottom: 20px;
-    color: #d2691e;
+    font-size: 2em;
   }
-  
+
   .startButton {
-    background-color: #ffcc80;
-    color: #5a3e2b;
-    border: none;
-    border-radius: 10px;
-    padding: 15px 30px;
-    font-size: 1.2em;
-    cursor: pointer;
-    margin-top: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px 20px;
+    font-size: 1em;
   }
-  
-  .startButton:hover {
-    background-color: #ffa726;
-  }
-  
+
   .ex {
-    margin-top: 30px;
-    padding: 20px;
-    background-color: #fff;
-    border: 2px solid #d2691e;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
-    text-align: left;
-    line-height: 1.6;
+    padding: 15px;
+    max-width: 90%;
   }
-  
-  @media (max-width: 768px) {
-    h1 {
-      font-size: 2em;
-    }
-  
-    .startButton {
-      padding: 10px 20px;
-      font-size: 1em;
-    }
-  
-    .ex {
-      padding: 15px;
-      max-width: 90%;
-    }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.8em;
   }
-  
-  @media (max-width: 480px) {
-    h1 {
-      font-size: 1.8em;
-    }
-  
-    .startButton {
-      padding: 8px 16px;
-      font-size: 0.9em;
-    }
-  
-    .ex {
-      padding: 10px;
-      max-width: 95%;
-    }
+
+  .startButton {
+    padding: 8px 16px;
+    font-size: 0.9em;
   }
+
+  .ex {
+    padding: 10px;
+    max-width: 95%;
+  }
+}
