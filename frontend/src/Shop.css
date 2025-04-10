@@ -60,18 +60,88 @@ iframe {
   .container {
     padding: 15px;
     max-width: 95%;
+.shop-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.shop-card {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  overflow: hidden;
+  position: relative;
+  text-align: center;
+  color: #5a3e2b;
+}
+
+.shop-card.main {
+  max-width: 600px;
+  margin-bottom: 40px;
+  border: 3px solid #ffa726; /* 結果を目立たせるための枠線 */
+}
+
+.shop-background {
+  background-size: cover;
+  background-position: center;
+  padding: 20px;
+  color: black;
+}
+
+.shop-row {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.shop-row .shop-card {
+  flex: 1;
+  max-width: 300px;
+}
+
+.shop-card h2,
+.shop-card h3 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.shop-card p {
+  font-size: 1em;
+  margin: 5px 0;
+}
+
+iframe {
+  width: 100%;
+  height: 200px;
+  border: none;
+  margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+    max-width: 95%;
   }
+
 
   h2 {
     font-size: 1.8em;
+    font-size: 1.8em;
   }
+
 
   select {
     font-size: 0.9em;
     padding: 8px;
+    font-size: 0.9em;
+    padding: 8px;
   }
 
+
   button {
+    font-size: 1em;
+    padding: 8px 16px;
     font-size: 1em;
     padding: 8px 16px;
   }
@@ -107,6 +177,7 @@ iframe {
   .shop-card h3 {
     font-size: 1em;
   }
+<<<<<<< HEAD
 
   .footer {
     position: fixed;
