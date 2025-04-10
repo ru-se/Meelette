@@ -65,18 +65,18 @@ const Genre: React.FC = () => {
       ) : data ? (
         <div>
           <h3>結果: {data.genre}</h3>
-          <button 
-                onClick={() => navigate('/ShopRoulette', { 
-                  state: { category: selectedAdditionalOption, rouletteResult: data?.genre } 
-                })}
-                disabled={!selectedAdditionalOption || !data}
-              >
-                次へ
-              </button>
-
+          <button className="SelsectButton"onClick={() => navigate('/Shop')}>お店を決める</button>
+          <br />
         </div>
       ) : null}
+      <button 
+            onClick={() => navigate('/')} 
+            style={{ marginTop: '10px' }}
+          >
+            トップへ
+          </button>
     </div>
+    
   );
 };
 

@@ -1,13 +1,17 @@
 .roulette-container {
   text-align: center;
   margin-top: 50px;
+  background-color: #fff7e6;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .roulette-wheel {
   width: 200px;
   height: 200px;
   border-radius: 50%;
-  border: 5px solid black;
+  border: 5px solid #d2691e;
   position: relative;
   margin: 20px auto;
   overflow: hidden;
@@ -22,7 +26,7 @@
   height: 0;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
-  border-bottom: 20px solid black;
+  border-bottom: 20px solid #d2691e;
   transform: translateX(-50%);
 }
 
@@ -32,20 +36,20 @@
   font-size: 16px;
   cursor: pointer;
   border: none;
-  background-color: #007bff;
-  color: white;
+  background-color: #ffcc80;
+  color: #5a3e2b;
   border-radius: 5px;
   display: block;
   margin: 0 auto;
 }
 
-.roulette-button:disabled {
-  background-color: #aaa;
-  cursor: not-allowed;
+.roulette-button:hover {
+  background-color: #ffa726;
 }
 
 .result-text {
   font-size: 18px;
   font-weight: bold;
   margin-top: 10px;
+  color: #d2691e;
 }

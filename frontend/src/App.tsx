@@ -11,7 +11,6 @@ import ShopResult from "./ShopResult"
 import Shop from "./Shop"
 // import Roulette from "./Roulette"
 import MapPage from "./ShopResult";
-import Map from './Map'; 
 
 
 const App: React.FC = () =>{
@@ -29,7 +28,6 @@ const App: React.FC = () =>{
       <Route path="/Shop" element={<Shop />} />
       {/* <Route path="/Roulette" element={<Roulette />} /> */}
       <Route path="/map" element={<MapPage />} />
-      <Route path="/map" element={<Map />} /> 
      
 
      

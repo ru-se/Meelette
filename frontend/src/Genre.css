@@ -1,64 +1,53 @@
 .container {
-    max-width: 300px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #f9f9f9;
-  }
-  
-  h2 {
-    margin-bottom: 16px;
-    font-size: 24px;
-    color: #333;
-  }
-  
-  .select-container {
-    position: relative;
-  }
-  
-  .select-arrow {
-    position: absolute;
-    top: 50%;
-    right: 8px;
-    transform: translateY(-50%);
-    width: 10px;
-    height: 10px;
-    border-left: 2px solid #777;
-    border-bottom: 2px solid #777;
-    transition: transform 0.2s ease-in-out;
-    pointer-events: none;
-  }
-  
-  .select-arrow.active {
-    transform: translateY(-50%) rotate(45deg);
-  }
-  
-  select {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #777;
-    border-radius: 8px;
-    appearance: none;
-    font-size: 16px;
-    background-color: #f9f9f9;
-    color: #333;
-    font-weight: bold;
-  }
-  
-  select:focus {
-    outline: none;
-    border-color:  rgb(12, 92, 61);
-    box-shadow: 0 0 0 2px  rgb(92, 148, 126);
-  }
-  
-  option {
-    background-color: #f9f9f9;
-  }
-  
-  p {
-    margin-top: 12px;
-    font-size: 14px;
-    color: #777;
-  }
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 2px solid #d2691e;
+  border-radius: 15px;
+  background-color: #fff7e6;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+
+h2 {
+  font-size: 1.8em;
+  color: #d2691e;
+  margin-bottom: 20px;
+}
+
+.select-container {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+select {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #d2691e;
+  border-radius: 8px;
+  font-size: 1em;
+  background-color: #fff7e6;
+  color: #5a3e2b;
+}
+
+select:focus {
+  outline: none;
+  border-color: #ffa726;
+  box-shadow: 0 0 5px #ffa726;
+}
+
+button {
+  background-color: #ffcc80;
+  color: #5a3e2b;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 1.2em;
+  cursor: pointer;
+  margin-top: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+  background-color: #ffa726;
+}
