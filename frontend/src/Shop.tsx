@@ -4,11 +4,6 @@ import { useNavigate } from "react-router-dom";
 import GoogleMapEmbed from './GoogleMap';
 import "./Shop.css";
 
-interface Option {
-  value: string;
-  label: string;
-}
-
 interface Shop {
   name: string;
   formatted_address: string;
@@ -22,54 +17,20 @@ const Shop: React.FC = () => {
   const [showRoulette, setShowRoulette] = useState(true); // ルーレットの表示状態
   const navigate = useNavigate();
   const [shopResult, setShopResult] = useState<Shop[]>([]);
-  const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: Option | null }>({
-    place: null,
-    category: null,
-    genre: null,
-  });
-
-  const dropdownOptions: { [key: string]: Option[] } = {
-    place: [
-      { value: "umeda", label: "梅田" },
-      { value: "nmba", label: "難波" },
-      { value: "shinsaibai", label: "心斎橋" },
-      { value: "tennouji", label: "天王寺" },
-    ],
-    category: [
-      { value: "morning", label: "モーニング" },
-      { value: "lunch", label: "ランチ" },
-      { value: "cafetime", label: "カフェタイム" },
-      { value: "dinner", label: "ディナー" },
-    ],
-    genre: [
-      { value: "western", label: "洋食" },
-      { value: "japanese", label: "和食" },
-      { value: "chinese", label: "中華" },
-      { value: "ramen", label: "ラーメン" },
-      { value: "cafe", label: "カフェ" },
-      { value: "korea", label: "韓国料理" },
-    ],
-  };
-
-  const handleSelectChange = (dropdownName: string, value: string) => {
-    setSelectedOptions((prev) => ({
-      ...prev,
-      [dropdownName]: dropdownOptions[dropdownName].find((option) => option.value === value) || null,
-    }));
-  };
+  const [place, setPlace] = useState<string>(''); // 入力式の場所
+  const [genre, setGenre] = useState<string>(''); // 入力式のジャンル
 
   const handleSpinComplete = () => {
-    if (!selectedOptions.place || !selectedOptions.genre) {
-      console.error("場所とジャンルの選択が必要です");
+    if (!place || !genre) {
+      console.error("場所とジャンルの入力が必要です");
       return;
     }
 
     const queryParams = new URLSearchParams({
-      location: selectedOptions.place.label,
-      genre: selectedOptions.genre.label,
+      location: place,
+      genre: genre,
     });
 
-   console.log(process.env.REACT_APP_BACKEND_URL);
     fetch(`${process.env.REACT_APP_BACKEND_URL}/search-shops?${queryParams.toString()}`)
       .then(response => response.json())
       .then(data => {
@@ -88,24 +49,27 @@ const Shop: React.FC = () => {
     <div style={{ textAlign: 'center', padding: '20px' }}>
       <h1>ルーレット画面</h1>
 
-      {Object.keys(dropdownOptions).map((dropdownName) => (
-        <div key={dropdownName} className="dropdown">
-          <label>
-            {dropdownName === "place" ? "　場所　" : dropdownName === "category" ? "カテゴリ" : "ジャンル"}
-          </label>
-          <select
-            value={selectedOptions[dropdownName]?.value || ""}
-            onChange={(event) => handleSelectChange(dropdownName, event.target.value)}
-          >
-            <option value="" disabled>選択してください</option>
-            {dropdownOptions[dropdownName].map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
-      ))}
+      {/* 場所の入力 */}
+      <div className="input-group">
+        <label>場所</label>
+        <input
+          type="text"
+          value={place}
+          onChange={(e) => setPlace(e.target.value)}
+          placeholder="例: 梅田"
+        />
+      </div>
+
+      {/* ジャンルの入力 */}
+      <div className="input-group">
+        <label>ジャンル</label>
+        <input
+          type="text"
+          value={genre}
+          onChange={(e) => setGenre(e.target.value)}
+          placeholder="例: ラーメン"
+        />
+      </div>
 
       {showRoulette && <Roulette onSpinComplete={handleSpinComplete} />}
 

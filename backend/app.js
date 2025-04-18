@@ -30,7 +30,7 @@ app.get('/search-shops', async (req, res) => {
   const genreEncoded = encodeURIComponent(genre);
   const locationEncoded = encodeURIComponent(location);
 
-  const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${genreEncoded}+in+${locationEncoded}&key=${apiKey}`;
+  const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${genreEncoded}+in+${locationEncoded}&key=${apiKey}&language=ja`;
 
   try {
     const response = await axios.get(url);
